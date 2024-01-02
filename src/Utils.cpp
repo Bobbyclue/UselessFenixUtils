@@ -471,7 +471,7 @@ namespace DebugAPI_IMPL
 
 		float zVal;
 
-		RE::NiCamera::WorldPtToScreenPt3((float(*)[4])(REL::ID(519579).address()), *((RE::NiRect<float>*)REL::ID(519618).address()), niWorldLoc, screenLocOut.x, screenLocOut.y, zVal, 1e-5f);
+		RE::NiCamera::WorldPtToScreenPt3((float(*)[4])(RELOCATION_ID(519579, 406126).address()), *((RE::NiRect<float>*)RELOCATION_ID(519618, 406160).address()), niWorldLoc, screenLocOut.x, screenLocOut.y, zVal, 1e-5f);
 		RE::GRectF rect = movie->GetVisibleFrameRect();
 
 		screenLocOut.x = rect.left + (rect.right - rect.left) * screenLocOut.x;
@@ -563,7 +563,7 @@ namespace Impl
 {
 	void PushActorAway_14067D4A0(RE::AIProcess* proc, RE::Actor* target, RE::NiPoint3* AggressorPos, float KnockDown)
 	{
-		return _generic_foo_<38858, decltype(PushActorAway_14067D4A0)>::eval(proc, target, AggressorPos, KnockDown);
+		return _generic_foo_<39895, decltype(PushActorAway_14067D4A0)>::eval(proc, target, AggressorPos, KnockDown);  // SE 38858
 	}
 
 	inline float radToDeg(float a_radians)
@@ -571,36 +571,37 @@ namespace Impl
 		return a_radians * (180.0f / RE::NI_PI);
 	}
 
-	bool BGSImpactManager__PlayImpactEffect_impl_1405A2C60(void* manager, RE::TESObjectREFR* a, RE::BGSImpactDataSet* impacts, const char* bone_name, RE::NiPoint3* Pick, float length, char abApplyNodeRotation, char abUseNodeLocalRotation)
+	bool BGSImpactManager__PlayImpactEffect_impl_1405A2C60(RE::BGSImpactManager* manager, RE::TESObjectREFR* a,
+		RE::BGSImpactDataSet* impacts, const RE::BSFixedString& bone_name, RE::NiPoint3& Pick, float length,
+		bool abApplyNodeRotation, bool abUseNodeLocalRotation)
 	{
-		return _generic_foo_<35320, decltype(BGSImpactManager__PlayImpactEffect_impl_1405A2C60)>::eval(manager, a, impacts, bone_name, Pick, length, abApplyNodeRotation, abUseNodeLocalRotation);
+		return manager->PlayImpactEffect(a, impacts, bone_name, Pick, length, abApplyNodeRotation, abUseNodeLocalRotation);
 	}
 
-	void* BGSImpactManager__GetSingleton()
+	RE::BGSImpactManager* BGSImpactManager__GetSingleton()
 	{
-		REL::Relocation<RE::NiPointer<void*>*> singleton{ REL::ID(515123) };
-		return singleton->get();
+		return RE::BGSImpactManager::GetSingleton();
 	}
 
 	void play_impact(RE::TESObjectCELL* cell, float one, const char* model, RE::NiPoint3* P_V, RE::NiPoint3* P_from, float a6, uint32_t _7, RE::NiNode* a8)
 	{
-		return _generic_foo_<29218, decltype(play_impact)>::eval(cell, one, model, P_V, P_from, a6, _7, a8);
+		return _generic_foo_<30071, decltype(play_impact)>::eval(cell, one, model, P_V, P_from, a6, _7, a8);  // SE 29218
 	}
 
 	float Actor__GetActorValueModifier(RE::Actor* a, RE::ACTOR_VALUE_MODIFIER mod, RE::ActorValue av)
 	{
-		return _generic_foo_<37524, decltype(Actor__GetActorValueModifier)>::eval(a, mod, av);
+		return _generic_foo_<38469, decltype(Actor__GetActorValueModifier)>::eval(a, mod, av);  // SE 37524
 	}
 
 	uint32_t* placeatme(RE::TESDataHandler* datahandler, uint32_t* handle, RE::TESBoundObject* form, RE::NiPoint3* pos, RE::NiPoint3* angle, RE::TESObjectCELL* cell, RE::TESWorldSpace* wrld, RE::TESObjectREFR* a8, char a9, void* a10, char persist, char a12)
 	{
-		return _generic_foo_<13625, decltype(placeatme)>::eval(datahandler, handle, form, pos, angle, cell, wrld, a8, a9, a10, persist, a12);
+		return _generic_foo_<13723, decltype(placeatme)>::eval(datahandler, handle, form, pos, angle, cell, wrld, a8, a9, a10, persist, a12); // SE 13625
 	}
 
 	RE::TESObjectREFR* PlaceAtMe(void* vm, int stack, RE::TESObjectREFR* refr, RE::TESBoundObject* form, uint32_t count,
 		char persist, char disabled)
 	{
-		return _generic_foo_<55672, decltype(PlaceAtMe)>::eval(vm, stack, refr, form, count, persist, disabled);
+		return _generic_foo_<56203, decltype(PlaceAtMe)>::eval(vm, stack, refr, form, count, persist, disabled);  // SE 55672
 	}
 }
 using namespace Impl;
@@ -609,18 +610,25 @@ namespace FenixUtils
 {
 	namespace Geom
 	{
-		float NiASin(float alpha) { return _generic_foo_<17744, decltype(NiASin)>::eval(alpha); }
+		float NiASin(float alpha) { 
+			// SE return _generic_foo_<17744, decltype(NiASin)>::eval(alpha); 
+			if (alpha <= -1.0f)
+				return -1.5707964f;
+			if (alpha < 1.0f)
+				return _generic_foo_<109724, decltype(asinf)>::eval(alpha);
+			return 1.5707964f;
+		}
 
 		float GetUnclampedZAngleFromVector(const RE::NiPoint3& V)
 		{
-			return _generic_foo_<68821, decltype(GetUnclampedZAngleFromVector)>::eval(V);
+			return _generic_foo_<70173, decltype(GetUnclampedZAngleFromVector)>::eval(V);  // SE 68821
 		}
 
-		float GetZAngleFromVector(const RE::NiPoint3& V) { return _generic_foo_<68820, decltype(GetZAngleFromVector)>::eval(V); }
+		float GetZAngleFromVector(const RE::NiPoint3& V) { return _generic_foo_<70172, decltype(GetZAngleFromVector)>::eval(V); } // SE 68820
 
 		void CombatUtilities__GetAimAnglesFromVector(const RE::NiPoint3& V, float& rotZ, float& rotX)
 		{
-			return _generic_foo_<46076, decltype(CombatUtilities__GetAimAnglesFromVector)>::eval(V, rotZ, rotX);
+			return _generic_foo_<47340, decltype(CombatUtilities__GetAimAnglesFromVector)>::eval(V, rotZ, rotX);  // SE 46076
 		}
 
 		RE::Projectile::ProjectileRot rot_at(const RE::NiPoint3& V)
@@ -745,7 +753,7 @@ namespace FenixUtils
 		{
 			RE::NiPoint3 CalculateLOSLocation(RE::TESObjectREFR* refr, LineOfSightLocation los_loc)
 			{
-				return _generic_foo_<46021, decltype(CalculateLOSLocation)>::eval(refr, los_loc);
+				return _generic_foo_<47282, decltype(CalculateLOSLocation)>::eval(refr, los_loc);  // SE 46021
 			}
 
 			RE::NiPoint3 raycast(RE::Actor* caster)
@@ -786,7 +794,7 @@ namespace FenixUtils
 
 			LineOfSightLocation Actor__CalculateLOS(RE::Actor* caster, RE::Actor* target, float viewCone)
 			{
-				return _generic_foo_<36752, decltype(Actor__CalculateLOS)>::eval(caster, target, viewCone);
+				return _generic_foo_<37768, decltype(Actor__CalculateLOS)>::eval(caster, target, viewCone);  // SE 36752
 			}
 
 			bool ActorInLOS(RE::Actor* caster, RE::Actor* target, float viewCone)
@@ -796,12 +804,12 @@ namespace FenixUtils
 
 			float Actor__CalculateAimDelta(RE::Actor* a, const RE::NiPoint3& target_pos)
 			{
-				return _generic_foo_<36757, decltype(Actor__CalculateAimDelta)>::eval(a, target_pos);
+				return _generic_foo_<37773, decltype(Actor__CalculateAimDelta)>::eval(a, target_pos);  // SE 36757
 			}
 
 			bool Actor__IsPointInAimCone(RE::Actor* a, RE::NiPoint3* target_pos, float viewCone)
 			{
-				return _generic_foo_<36756, decltype(Actor__IsPointInAimCone)>::eval(a, target_pos, viewCone);
+				return _generic_foo_<37772, decltype(Actor__IsPointInAimCone)>::eval(a, target_pos, viewCone);  // SE 36756
 			}
 		}
 	}
@@ -809,21 +817,26 @@ namespace FenixUtils
 	namespace Random
 	{
 		// random(0..1) <= chance
-		bool RandomBoolChance(float prop) { return _generic_foo_<26009, decltype(RandomBoolChance)>::eval(prop); }
+		bool RandomBoolChance(float prop) { return _generic_foo_<68276, decltype(RandomBoolChance)>::eval(prop); }  // SE 26009 ??? One of these is wrong
 
-		float Float(float min, float max) { return _generic_foo_<14109, decltype(Float)>::eval(min, max); }
+		float Float(float min, float max) { return _generic_foo_<14206, decltype(Float)>::eval(min, max); }  // SE 14109
 
-		float FloatChecked(float min, float max) { return _generic_foo_<25867, decltype(FloatChecked)>::eval(min, max); }
+		float FloatChecked(float min, float max) { return _generic_foo_<26433, decltype(FloatChecked)>::eval(min, max); }  // SE 25867
 
-		float FloatTwoPi() { return _generic_foo_<15093, decltype(FloatTwoPi)>::eval(); }
+		float FloatTwoPi() { return _generic_foo_<68276, decltype(FloatTwoPi)>::eval(); }  // SE 15093 ??? One of these is wrong
 
-		float Float0To1() { return _generic_foo_<28658, decltype(FloatTwoPi)>::eval(); }
+		float Float0To1() { return _generic_foo_<28658, decltype(FloatTwoPi)>::eval(); } // AE Port needed
 
-		float FloatNeg1To1() { return _generic_foo_<28716, decltype(FloatTwoPi)>::eval(); }
+		float FloatNeg1To1() { 
+			std::random_device rd;
+			std::mt19937 g(rd());
+			return std::generate_canonical<float, 2>(g) - 1;
+			//_generic_foo_<28716, decltype(FloatTwoPi)>::eval(); 
+		}
 
 		int32_t random_range(int32_t min, int32_t max)
 		{
-			return _generic_foo_<56478, int32_t(void*, uint32_t, void*, int32_t a_min, int32_t a_max)>::eval(nullptr, 0, nullptr,
+			return _generic_foo_<56836, int32_t(void*, uint32_t, void*, int32_t a_min, int32_t a_max)>::eval(nullptr, 0, nullptr, // SE 56478
 				min, max);
 		}
 	}
@@ -897,7 +910,7 @@ namespace FenixUtils
 		}
 	}
 
-	float Projectile__GetSpeed(RE::Projectile* proj) { return _generic_foo_<42958, decltype(Projectile__GetSpeed)>::eval(proj); }
+	float Projectile__GetSpeed(RE::Projectile* proj) { return _generic_foo_<44139, decltype(Projectile__GetSpeed)>::eval(proj); } // SE 42958
 
 	void Projectile__set_collision_layer(RE::Projectile* proj, RE::COL_LAYER collayer)
 	{
@@ -910,27 +923,27 @@ namespace FenixUtils
 
 	void TESObjectREFR__SetAngleOnReferenceX(RE::TESObjectREFR* refr, float angle_x)
 	{
-		return _generic_foo_<19360, decltype(TESObjectREFR__SetAngleOnReferenceX)>::eval(refr, angle_x);
+		return _generic_foo_<19787, decltype(TESObjectREFR__SetAngleOnReferenceX)>::eval(refr, angle_x);  // SE 19360
 	}
 
 	void TESObjectREFR__SetAngleOnReferenceZ(RE::TESObjectREFR* refr, float angle_z)
 	{
-		return _generic_foo_<19362, decltype(TESObjectREFR__SetAngleOnReferenceZ)>::eval(refr, angle_z);
+		return _generic_foo_<19789, decltype(TESObjectREFR__SetAngleOnReferenceZ)>::eval(refr, angle_z);  // SE 19362
 	}
 
 
 
 
-	RE::TESObjectARMO* GetEquippedShield(RE::Actor* a) { return _generic_foo_<37624, decltype(GetEquippedShield)>::eval(a); }
+	RE::TESObjectARMO* GetEquippedShield(RE::Actor* a) { return _generic_foo_<38577, decltype(GetEquippedShield)>::eval(a); } // SE 37624
 
 	RE::EffectSetting* getAVEffectSetting(RE::MagicItem* mgitem)
 	{
-		return _generic_foo_<11194, decltype(getAVEffectSetting)>::eval(mgitem);
+		return _generic_foo_<11302, decltype(getAVEffectSetting)>::eval(mgitem);  // SE 11194
 	}
 
 	void damageav_attacker(RE::Actor* victim, RE::ACTOR_VALUE_MODIFIERS::ACTOR_VALUE_MODIFIER i1, RE::ActorValue i2, float val, RE::Actor* attacker)
 	{
-		return _generic_foo_<37523, decltype(damageav_attacker)>::eval(victim, i1, i2, val, attacker);
+		return _generic_foo_<38468, decltype(damageav_attacker)>::eval(victim, i1, i2, val, attacker);  // SE 37523
 	}
 
 	void damageav(RE::Actor* a, RE::ActorValue av, float val)
@@ -940,19 +953,19 @@ namespace FenixUtils
 
 	RE::TESObjectWEAP* get_UnarmedWeap()
 	{
-		constexpr REL::ID UnarmedWeap(static_cast<std::uint64_t>(514923));
+		constexpr REL::ID UnarmedWeap(RELOCATION_ID(514923, 401061));
 		REL::Relocation<RE::NiPointer<RE::TESObjectWEAP>*> singleton{ UnarmedWeap };
 		return singleton->get();
 	}
 
 	bool PlayIdle(RE::AIProcess* proc, RE::Actor* attacker, RE::DEFAULT_OBJECT smth, RE::TESIdleForm* idle, bool a5, bool a6, RE::Actor* target)
 	{
-		return _generic_foo_<38290, decltype(PlayIdle)>::eval(proc, attacker, smth, idle, a5, a6, target);
+		return _generic_foo_<39256, decltype(PlayIdle)>::eval(proc, attacker, smth, idle, a5, a6, target);  // SE 38290
 	}
 
 	float PlayerCharacter__get_reach(RE::Actor* a)
 	{
-		return _generic_foo_<37588, decltype(PlayerCharacter__get_reach)>::eval(a);
+		return _generic_foo_<38538, decltype(PlayerCharacter__get_reach)>::eval(a);  // SE 37588
 	}
 
 	float GetHeadingAngle(RE::TESObjectREFR* a, const RE::NiPoint3& a_pos, bool a_abs)
@@ -997,11 +1010,11 @@ namespace FenixUtils
 		handle.assumeSuccess = false;
 		*(uint32_t*)&handle.state = 0;
 	
-		auto manager = _generic_foo_<66391, void*()>::eval();
-		_generic_foo_<66401, int(void*, RE::BSSoundHandle*, int, int)>::eval(manager, &handle, formid, 16);
-		if (_generic_foo_<66370, bool(RE::BSSoundHandle*, float, float, float)>::eval(&handle, a->data.location.x, a->data.location.y, a->data.location.z)) {
-			_generic_foo_<66375, void(RE::BSSoundHandle*, RE::NiAVObject*)>::eval(&handle, a->Get3D());
-			_generic_foo_<66355, bool(RE::BSSoundHandle*)>::eval(&handle);
+		auto manager = RE::BSAudioManager::GetSingleton();
+		_generic_foo_<67663, int(void*, RE::BSSoundHandle*, int, int)>::eval(manager, &handle, formid, 16);  // SE 66401
+		if (handle.SetPosition(a->data.location)) {
+			handle.SetObjectToFollow(a->Get3D());
+			handle.Play();
 		}
 	}
 
@@ -1010,7 +1023,7 @@ namespace FenixUtils
 		auto impacts = RE::TESForm::LookupByID<RE::BGSImpactDataSet>(0x000183FF);
 		//auto impacts = RE::TESDataHandler::GetSingleton()->LookupForm<RE::BGSImpactDataSet>(RE::FormID(0x1A3FB), "Dawnguard.esm");
 		RE::NiPoint3 Pick = { 0.0f, 0.0f, 1.0f };
-		return BGSImpactManager__PlayImpactEffect_impl_1405A2C60(BGSImpactManager__GetSingleton(), a, impacts, "WEAPON", &Pick, 125.0f, true, false);
+		return BGSImpactManager__PlayImpactEffect_impl_1405A2C60(BGSImpactManager__GetSingleton(), a, impacts, "WEAPON", Pick, 125.0f, true, false);
 	}
 
 	void play_impact(RE::TESObjectREFR* a, RE::BGSImpactData* impact, RE::NiPoint3* P_V, RE::NiPoint3* P_from, RE::NiNode* bone)
@@ -1037,7 +1050,7 @@ namespace FenixUtils
 
 	bool TESObjectREFR__HasEffectKeyword(RE::TESObjectREFR* a, RE::BGSKeyword* kwd)
 	{
-		return _generic_foo_<19220, decltype(TESObjectREFR__HasEffectKeyword)>::eval(a, kwd);
+		return _generic_foo_<19646, decltype(TESObjectREFR__HasEffectKeyword)>::eval(a, kwd);  // SE 19220
 	}
 
 	RE::BGSAttackDataPtr get_attackData(RE::Actor* a)
@@ -1052,7 +1065,7 @@ namespace FenixUtils
 
 	bool is_powerattacking(RE::Actor* a)
 	{
-		return _generic_foo_<37639, decltype(is_powerattacking)>::eval(a);
+		return _generic_foo_<38592, decltype(is_powerattacking)>::eval(a);  // SE 37639
 	}
 
 	RE::TESObjectWEAP* get_weapon(RE::Actor* a)
@@ -1080,14 +1093,14 @@ namespace FenixUtils
 
 	void set_RegenDelay(RE::AIProcess* proc, RE::ActorValue av, float time)
 	{
-		return _generic_foo_<38526, decltype(set_RegenDelay)>::eval(proc, av, time);
+		return _generic_foo_<39536, decltype(set_RegenDelay)>::eval(proc, av, time);  // SE 38526
 	}
 
 	void FlashHudMenuMeter__blink(RE::ActorValue av) { _generic_foo_<51907, decltype(FlashHudMenuMeter__blink)>::eval(av); }
 
 	float get_regen(RE::Actor* a, RE::ActorValue av)
 	{
-		return _generic_foo_<37515, decltype(get_regen)>::eval(a, av);
+		return _generic_foo_<38460, decltype(get_regen)>::eval(a, av);  // SE 37515
 	}
 
 	void damagestamina_delay_blink(RE::Actor* a, float cost) {
@@ -1127,7 +1140,7 @@ namespace FenixUtils
 
 	void AddItem(RE::Actor* a, RE::TESBoundObject* item, RE::ExtraDataList* extraList, int count, RE::TESObjectREFR* fromRefr)
 	{
-		return _generic_foo_<36525, decltype(AddItem)>::eval(a, item, extraList, count, fromRefr);
+		return _generic_foo_<37525, decltype(AddItem)>::eval(a, item, extraList, count, fromRefr);  // SE 36525
 	}
 
 	void AddItemPlayer(RE::TESBoundObject* item, int count)
@@ -1137,13 +1150,13 @@ namespace FenixUtils
 
 	int RemoveItemPlayer(RE::TESBoundObject* item, int count)
 	{
-		return _generic_foo_<16564, decltype(RemoveItemPlayer)>::eval(item, count);
+		return _generic_foo_<16919, decltype(RemoveItemPlayer)>::eval(item, count);  // SE 16564
 	}
 	
 	int get_item_count(RE::Actor* a, RE::TESBoundObject* item)
 	{
 		if (auto changes = a->GetInventoryChanges()) {
-			return _generic_foo_<15868, int(RE::InventoryChanges*, RE::TESBoundObject*)>::eval(changes, item);
+			return _generic_foo_<16108, int(RE::InventoryChanges*, RE::TESBoundObject*)>::eval(changes, item);  // SE 15868
 		}
 
 		return 0;
